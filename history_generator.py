@@ -1,3 +1,3 @@
-from classes.HistoryGenerator import HistoryGenerator
+from classes.FileHistoryGenerator import FileHistoryGenerator
 
-history_generator = HistoryGenerator()
+history_generator = FileHistoryGenerator("sample_1.py")
