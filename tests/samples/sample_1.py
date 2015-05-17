@@ -1,3 +1,3 @@
 class Shape:
-    def area(self, x, y):
+    def area2(self, x, y):
         return x * y

@@ -1,6 +1,6 @@
 from io import StringIO
-from pprint import pprint
 import tokenize
+from classes.DiffTool import DiffTool
 
 
 def print_2d_array(array):
@@ -66,7 +66,8 @@ class Token:
         self.line = tok_line
 
     def __str__(self):
-        return str(self.begin) + "-" + str(self.end) + ": " + str(self.type) + " - " + self.value
+        return self.value
+        # return str(self.begin) + "-" + str(self.end) + ": " + str(self.type) + " - " + self.value
 
     def __repr__(self):
         return self.__str__()
@@ -74,23 +75,31 @@ class Token:
     def __eq__(self, other):
         return self.type == other.type and self.value == other.value
 
-# content1 = open("tests/samples/sample_1.py").read()
-# content2 = open("tests/samples/sample_2.py").read()
+content1 = open("tests/samples/sample_1.py").read()
+content2 = open("tests/samples/sample_2.py").read()
+
+tokens1 = Parser.generate_tokens(content1)
+tokens2 = Parser.generate_tokens(content2)
+
+
+# content1 = "abcdefghijklmnop"
+# content2 = "abcd1fghi2klmnop"
+
+# content1 = "AATCC"
+# content2 = "ACACG"
 #
-# tokens1 = Parser.generate_tokens(content1)
-# tokens2 = Parser.generate_tokens(content2)
-#
-# lcs_array = Parser.lcs_array(tokens1, tokens2)
+# lcs_array = Parser.lcs_array(content1, content2)
 #
 # print_2d_array(lcs_array)
+#
+# lcs = Parser.resolve_lcs(content1, lcs_array)
+#
+# pprint(lcs)
 
-content1 = "abcdefgh"
-content2 = "abcdifgh"
-
-lcs_array = Parser.lcs_array(content1, content2)
-
+lcs_array = DiffTool.lcs_array(tokens1, tokens2)
 print_2d_array(lcs_array)
-
-lcs = Parser.resolve_lcs(content1, lcs_array)
-
-pprint(lcs)
+lcs = DiffTool.lcs(lcs_array, tokens1, tokens2, len(tokens1), len(tokens2))
+# print(lcs)
+DiffTool.print_diff(lcs_array, tokens1, tokens2, len(tokens1), len(tokens2))
+# lcs_all = DiffTool.lcs_all(lcs_array, content1, content2, len(content1), len(content2))
+# print(lcs_all)
