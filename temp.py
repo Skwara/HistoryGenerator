@@ -1,6 +1,33 @@
+from classes.DiffGenerator import DiffGenerator
+from classes.DiffPrinter import DiffPrinter
+
+
+class FileLoader:
+    def __init__(self, source_file_path):
+        self.source_file_path = source_file_path
+        self.source_file = None
+        self.content = None
+
+        self.__read_file_content()
+
+    def __read_file_content(self):
+        self.source_file = open(self.source_file_path, 'r')
+        self.content = self.source_file.read()
+
+# ----------------------------------------------
 from io import StringIO
 import tokenize
-from classes.DiffTool import DiffTool
+
+
+class FileParser:
+    def __init__(self, string):
+        self.string = string
+        self.__parse()
+
+    def __parse(self):
+        tokens = tokenize.generate_tokens(StringIO(self.string).readline)
+        for token_type, token_value, token_begin, token_end, token_line in tokens:
+            print(str(token_begin) + "-" + str(token_end) + ": " + str(tokenize.tok_name[token_type]) + " - " + token_value)
 
 
 def print_2d_array(array):
@@ -96,10 +123,10 @@ tokens2 = Parser.generate_tokens(content2)
 #
 # pprint(lcs)
 
-lcs_array = DiffTool.lcs_array(tokens1, tokens2)
+lcs_array = DiffGenerator.__generate_lcs_array(tokens1, tokens2)
 print_2d_array(lcs_array)
-lcs = DiffTool.lcs(lcs_array, tokens1, tokens2, len(tokens1), len(tokens2))
+lcs = DiffGenerator.__generate_lcs(lcs_array, tokens1, tokens2, len(tokens1), len(tokens2))
 # print(lcs)
-DiffTool.print_diff(lcs_array, tokens1, tokens2, len(tokens1), len(tokens2))
+DiffPrinter.__print_diff(lcs_array, tokens1, tokens2, len(tokens1), len(tokens2))
 # lcs_all = DiffTool.lcs_all(lcs_array, content1, content2, len(content1), len(content2))
 # print(lcs_all)
