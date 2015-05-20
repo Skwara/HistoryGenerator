@@ -2,7 +2,7 @@ import unittest
 import shutil
 import os
 import filecmp
-from classes.FileSystemHandler import FileSystemHandler
+from classes.FileSystemHandler import FileSystemHandler, FileSystemHandlerException
 
 
 class FileSystemHandlerTestCase(unittest.TestCase):
@@ -21,6 +21,8 @@ class FileSystemHandlerTestCase(unittest.TestCase):
         self.assertTrue(os.path.isfile("history/file1.py/2"))
         self.assertTrue(filecmp.cmp("samples/sample_1.py", "history/file1.py/1"))
         self.assertTrue(filecmp.cmp("samples/sample_2.py", "history/file1.py/2"))
+
+        self.assertRaises(FileSystemHandlerException, FileSystemHandler.add_to_history, "file1.py")
 
     def test_read_revision_content(self):
         shutil.copyfile("samples/sample_1.py", "file1.py")
