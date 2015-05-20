@@ -24,6 +24,8 @@ class FileSystemHandlerTestCase(unittest.TestCase):
         self.assertTrue(filecmp.cmp("samples/sample_1.py", "history/file1.py/1"))
         self.assertTrue(filecmp.cmp("samples/sample_2.py", "history/file1.py/2"))
 
+        self.assertRaises(FileSystemHandlerException, FileSystemHandler.add_to_history, "file1.py")
+
     def test_read_revision_content(self):
         shutil.copyfile("samples/sample_1.py", "file1.py")
         self.file_system_handler = FileSystemHandler.add_to_history("file1.py")
