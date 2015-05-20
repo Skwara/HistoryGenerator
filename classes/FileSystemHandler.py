@@ -1,3 +1,10 @@
+import os
+import shutil
+import tokenize
+from io import StringIO
+from classes.Token import Token
+
+
 class FileSystemHandlerException(Exception):
     def __init__(self, value):
         self.value = value
@@ -17,28 +24,39 @@ class FileSystemHandler:
 
     @classmethod
     def read_revision_content(cls, file_path, revision_id):
-        # TODO
-        # this has to return array of tokens
+        file = open(cls.__history_path(file_path) + str(revision_id))
+        return cls.__generate_tokens(file.read())
         pass
+
+    @classmethod
+    def __generate_tokens(cls, content):
+        tokens = []
+        inner_tokens = tokenize.generate_tokens(StringIO(content).readline)
+        for token_type, token_value, token_begin, token_end, token_line in inner_tokens:
+            tokens.append(Token(token_type, token_value, token_begin, token_end, token_line))
+
+        return tokens
 
     @classmethod
     def __history_exists(cls, file_path):
-        # TODO
-        # discover a way for differentiate file histories not only by file name but file path
-        pass
+        return os.path.isdir(cls.__history_path(file_path))
 
     @classmethod
     def __create_history(cls, file_path):
-        # TODO
-        pass
+        os.makedirs(cls.__history_path(file_path))
 
     @classmethod
     def __generate_revision_id(cls, file_path):
-        # TODO
-        pass
+        revisions = os.listdir(cls.__history_path(file_path))
+        if not revisions:
+            return 1
+        else:
+            return max([int(revision) for revision in revisions]) + 1
 
     @classmethod
-    def __save_revision(cls, rev_id, file_path):
-        # TODO
-        # file path is needed for copying the file from it's source
-        pass
+    def __save_revision(cls, revision_id, file_path):
+        shutil.copyfile(file_path, cls.__history_path(file_path) + str(revision_id))
+
+    @classmethod
+    def __history_path(cls, file_path):
+        return "history/" + os.path.basename(file_path) + "/"
