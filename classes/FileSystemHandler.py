@@ -1,6 +1,7 @@
 import os
 import shutil
 import tokenize
+import filecmp
 from io import StringIO
 from classes.Token import Token
 
@@ -51,6 +52,8 @@ class FileSystemHandler:
         if not revisions:
             return 1
         else:
+            if filecmp.cmp(file_path, cls.__last_revision_path(file_path)):
+                raise FileSystemHandlerException("New file is the same as last revision")
             return max([int(revision) for revision in revisions]) + 1
 
     @classmethod
@@ -60,3 +63,8 @@ class FileSystemHandler:
     @classmethod
     def __history_path(cls, file_path):
         return "history/" + os.path.basename(file_path) + "/"
+
+    @classmethod
+    def __last_revision_path(cls, file_path):
+        revisions = os.listdir(cls.__history_path(file_path))
+        return cls.__history_path(file_path) + str(max([int(revision) for revision in revisions]))

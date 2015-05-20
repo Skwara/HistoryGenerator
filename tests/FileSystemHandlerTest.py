@@ -2,7 +2,7 @@ import unittest
 import shutil
 import os
 import filecmp
-from classes.FileSystemHandler import FileSystemHandler
+from classes.FileSystemHandler import FileSystemHandler, FileSystemHandlerException
 
 
 class FileSystemHandlerTestCase(unittest.TestCase):
@@ -15,6 +15,8 @@ class FileSystemHandlerTestCase(unittest.TestCase):
         self.file_system_handler = FileSystemHandler.add_to_history("file1.py")
         shutil.copyfile("samples/sample_2.py", "file1.py")
         self.file_system_handler = FileSystemHandler.add_to_history("file1.py")
+
+        self.assertRaises(FileSystemHandlerException, FileSystemHandler.add_to_history, "file1.py")
 
         self.assertTrue(os.path.isdir("history/file1.py"))
         self.assertTrue(os.path.isfile("history/file1.py/1"))
