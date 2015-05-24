@@ -10,8 +10,13 @@ class DiffGeneratorException(Exception):
 
 
 class Diff:
-    def __init__(self):
-        pass
+    def __init__(self, file_path, revision_id_1, revision_id_2, lcs_array, content_1, content_2):
+        self.file_path = file_path
+        self.revision_id_1 = revision_id_1
+        self.revision_id_2 = revision_id_2
+        self.lcs_array = lcs_array
+        self.content_1 = content_1
+        self.content_2 = content_2
 
 
 class DiffGenerator:
@@ -20,8 +25,8 @@ class DiffGenerator:
         revision1_content = FileSystemHandler.read_revision_content(file_path, revision_id_1)
         revision2_content = FileSystemHandler.read_revision_content(file_path, revision_id_2)
         lcs_array = cls.__generate_lcs_array(revision1_content, revision2_content)
-        lcs = cls.__generate_lcs(lcs_array, revision1_content, revision2_content)
-        # TODO encapsulate this shit into Diff class and return it (meeting is needed i think)
+        # lcs = cls.__generate_lcs(lcs_array, revision1_content, revision2_content)
+        return Diff(file_path, revision_id_1, revision_id_2, lcs_array, revision1_content, revision2_content)
 
     @classmethod
     def __generate_lcs_array(cls, seq1, seq2):
