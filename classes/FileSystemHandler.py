@@ -22,6 +22,7 @@ class FileSystemHandler:
 
         rev_id = cls.__generate_revision_id(file_path)
         cls.__save_revision(rev_id, file_path)
+        print(rev_id)
 
     @classmethod
     def read_revision_content(cls, file_path, revision_id):
