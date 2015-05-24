@@ -1,7 +1,7 @@
 from tokenize import untokenize
 from termcolor import colored
 from classes.Token import TokenStatus
-
+import colorama
 
 class DiffPrinter:
     @classmethod
@@ -63,6 +63,7 @@ class DiffPrinter:
 
     @classmethod
     def __prepare_output_colors(cls, tokens):
+        colorama.init()
         untokenize_input = []
         for token in tokens:
             if token.status == TokenStatus.not_changed:
