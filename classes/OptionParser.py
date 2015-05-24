@@ -25,7 +25,9 @@ class OptionParser:
     @property
     def file_path(self):
         # TODO Extract parsing method
-        if 'diff' in self.arguments and self.arguments['diff'] is not None:
+        if 'add' in self.arguments and self.arguments['add'] is not None:
+            return self.arguments['add'][0]
+        elif 'diff' in self.arguments and self.arguments['diff'] is not None:
             return self.arguments['diff'][0]
         else:
             # TODO Think of better name
@@ -44,7 +46,6 @@ class OptionParser:
             return self.arguments['diff'][2]
         else:
             return "---"
-
 
     # For debug
     # def check(self):

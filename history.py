@@ -10,7 +10,7 @@ def is_valid_file(arg):
     if not os.path.exists(arg):
         parser.error("The file %s does not exist!" % arg)
     else:
-        return is_valid_file
+        return arg
 
 parser = argparse.ArgumentParser()
 
