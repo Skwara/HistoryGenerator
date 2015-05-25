@@ -32,8 +32,8 @@ class HistoryHandler:
             print("\t" + str(e))
             raise HistoryHandlerException("HistoryHandler failed")
 
-    def print_diff(self, is_verbose):
-        if is_verbose:
-            DiffPrinter.print_verbose_diff(self.diff)
+    def print_diff(self, opt):
+        if opt.is_verbose:
+            DiffPrinter.print_verbose_diff(self.diff, opt.verbose_separator, opt.verbose_padding)
         else:
             DiffPrinter.print_basic_diff(self.diff)

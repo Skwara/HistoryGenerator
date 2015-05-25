@@ -1,11 +1,21 @@
 from tokenize import untokenize
-from termcolor import colored
+from termcolor import colored, cprint
 from classes.Token import TokenStatus
+from enum import Enum
 import colorama
 
+
 class DiffPrinter:
+    class _DiffState(Enum):
+        Same = 0,
+        Added = 1,
+        Removed = 2
+
     @classmethod
-    def print_verbose_diff(cls, diff):
+    def print_verbose_diff(cls, diff, separator, padding):
+        colorama.init()
+        cls.separator = separator
+        cls.padding = padding
         cls.__print_diff_verbose(diff.lcs_array, diff.content_1, diff.content_2,
                                  len(diff.content_1), len(diff.content_2))
 
@@ -21,14 +31,14 @@ class DiffPrinter:
     def __print_diff_verbose(cls, lcs_array, seq1, seq2, i, j):
         if i > 0 and j > 0 and seq1[i - 1] == seq2[j - 1]:
             cls.__print_diff_verbose(lcs_array, seq1, seq2, i - 1, j - 1)
-            print("  " + str(seq1[i - 1]))
+            cls.__do_print(seq1[i - 1], cls._DiffState.Same)
         else:
             if j > 0 and (i == 0 or lcs_array[i][j - 1] >= lcs_array[i - 1][j]):
                 cls.__print_diff_verbose(lcs_array, seq1, seq2, i, j - 1)
-                print("+ " + str(seq2[j - 1]))
+                cls.__do_print(seq1[i - 1], cls._DiffState.Added)
             elif i > 0 and (j == 0 or lcs_array[i][j - 1] < lcs_array[i - 1][j]):
                 cls.__print_diff_verbose(lcs_array, seq1, seq2, i - 1, j)
-                print("- " + str(seq1[i - 1]))
+                cls.__do_print(seq1[i - 1], cls._DiffState.Removed)
 
     @classmethod
     def __prepare_tokens(cls, tokens, lcs_array, content_1, content_2, i, j):
@@ -74,3 +84,40 @@ class DiffPrinter:
                 untokenize_input.append([token.type, colored(token.value, 'red')])
 
         return untokenize(untokenize_input)
+
+    @classmethod
+    def __do_print(cls, value, diff_state):
+        color = ''
+        diff_char = ''
+        if diff_state == cls._DiffState.Same:
+            color = 'white'
+            diff_char = '='
+        elif diff_state == cls._DiffState.Added:
+            color = 'green'
+            diff_char = '+'
+        elif diff_state == cls._DiffState.Removed:
+            color = 'red'
+            diff_char = '-'
+
+        # Optional replacements for better readability. To be discussed.
+        token = value.value.replace('\n', '\\n')
+        if str(value.type_str) == "INDENT":
+            token = "INDENT"
+        elif str(value.type_str) == "DEDENT":
+            token = "DEDENT"
+        elif str(value.type_str) == "ENDMARKER":
+            token = "ENDMARKER"
+
+        cprint("%s%c%s%c%s%c%s%c%s%c%s" %
+               (str(diff_char).ljust(cls.padding),
+                cls.separator,
+                str(value.type_str).ljust(cls.padding),
+                cls.separator,
+                str(value.begin[0]).ljust(cls.padding),
+                cls.separator,
+                str(value.begin[1]).ljust(cls.padding),
+                cls.separator,
+                str(value.end[1]).ljust(cls.padding),
+                cls.separator,
+                str(token).ljust(cls.padding)),
+               color)

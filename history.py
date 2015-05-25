@@ -12,18 +12,19 @@ def is_valid_file(arg):
     else:
         return arg
 
+
 parser = argparse.ArgumentParser()
 
-parser.add_argument('-a', '--add', nargs=1, type=is_valid_file, help='Adds a file to the program database',
-                    required=False)
-parser.add_argument('-d', '--diff', nargs=3, type=str, help='Differentiate two sets of revisions', required=False)  # TODO Add custom check to differentiate 1 string and 2 ints
+addHelpStr = 'Adds a file to the program database'
+diffHelpStr = 'Differentiate two sets of revisions'
+verbHelpStr = 'Prints diff with set of additional information, helpful in e.g. displaying in GUI '
 
-# TODO Have to work on that, not sure how to create an arg without a variable
-# parser.add_argument('-v', '--verbose', nargs=1, help='???',  required=False, default=argparse.SUPPRESS)
+parser.add_argument('-a', '--add', nargs=1, type=is_valid_file, help=addHelpStr, required=False)
+# TODO Add custom check to differentiate 1 string and 2 ints
+parser.add_argument('-d', '--diff', nargs=3, type=str, help=diffHelpStr, required=False)
+parser.add_argument('-v', '--verbose', nargs='*', help=verbHelpStr, required=False)
 
-args = parser.parse_args()
-
-opt = OptionParser(vars(args))
+opt = OptionParser(vars(parser.parse_args()))
 
 if opt.is_add:
     try:
@@ -39,4 +40,4 @@ if opt.is_diff:
     except HistoryHandlerException as e:
         sys.exit()
 
-    history_handler.print_diff(opt.is_verbose)
+    history_handler.print_diff(opt)

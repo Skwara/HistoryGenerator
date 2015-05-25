@@ -15,6 +15,20 @@ class OptionParser:
         return self.__check_for_arg('verbose')
 
     @property
+    def verbose_separator(self):
+        if len(self.arguments['verbose']) > 0:
+            return self.arguments['verbose'][0].replace('\\n', '\n').replace('\\t', '\t')
+        else:
+            return '\t'
+
+    @property
+    def verbose_padding(self):
+        if len(self.arguments['verbose']) > 0:
+            return int(self.arguments['verbose'][1])
+        else:
+            return 5
+
+    @property
     def is_add(self):
         return self.__check_for_arg('add')
 
