@@ -87,16 +87,12 @@ class DiffPrinter:
 
     @classmethod
     def __do_print(cls, value, diff_state):
-        color = ''
         diff_char = ''
         if diff_state == cls._DiffState.Same:
-            color = 'white'
             diff_char = '='
         elif diff_state == cls._DiffState.Added:
-            color = 'green'
             diff_char = '+'
         elif diff_state == cls._DiffState.Removed:
-            color = 'red'
             diff_char = '-'
 
         # Optional replacements for better readability. To be discussed.
@@ -108,7 +104,7 @@ class DiffPrinter:
         elif str(value.type_str) == "ENDMARKER":
             token = "ENDMARKER"
 
-        cprint("%s%c%s%c%s%c%s%c%s%c%s" %
+        print("%s%c%s%c%s%c%s%c%s%c%s" %
                (str(diff_char).ljust(cls.padding),
                 cls.separator,
                 str(value.type_str).ljust(cls.padding),
@@ -119,5 +115,4 @@ class DiffPrinter:
                 cls.separator,
                 str(value.end[1]).ljust(cls.padding),
                 cls.separator,
-                str(token).ljust(cls.padding)),
-               color)
+                str(token).ljust(cls.padding)))
