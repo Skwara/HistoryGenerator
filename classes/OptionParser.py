@@ -29,6 +29,10 @@ class OptionParser:
             return 5
 
     @property
+    def is_json_verbose(self):
+        return self.arguments['jverbose']
+
+    @property
     def is_add(self):
         return self.__check_for_arg('add')
 

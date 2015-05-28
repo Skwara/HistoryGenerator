@@ -15,14 +15,16 @@ def is_valid_file(arg):
 
 parser = argparse.ArgumentParser()
 
-addHelpStr = 'Adds a file to the program database'
-diffHelpStr = 'Differentiate two sets of revisions'
-verbHelpStr = 'Prints diff with set of additional information, helpful in e.g. displaying in GUI '
+add_help_str = 'Adds a file to the program database'
+diff_help_str = 'Differentiate two sets of revisions'
+verb_help_str = 'Prints diff with set of additional information, helpful in e.g. displaying in GUI '
+json_verb_help_str = 'Prints diff with set of additional information, helpful in e.g. displaying in GUI in JSON'
 
-parser.add_argument('-a', '--add', nargs=1, type=is_valid_file, help=addHelpStr, required=False)
+parser.add_argument('-a', '--add', nargs=1, type=is_valid_file, help=add_help_str, required=False)
 # TODO Add custom check to differentiate 1 string and 2 ints
-parser.add_argument('-d', '--diff', nargs=3, type=str, help=diffHelpStr, required=False)
-parser.add_argument('-v', '--verbose', nargs='*', help=verbHelpStr, required=False)
+parser.add_argument('-d', '--diff', nargs=3, type=str, help=diff_help_str, required=False)
+parser.add_argument('-v', '--verbose', nargs='*', help=verb_help_str, required=False)
+parser.add_argument('-j', '--jverbose', action='store_true', help=json_verb_help_str, required=False)
 
 opt = OptionParser(vars(parser.parse_args()))
 

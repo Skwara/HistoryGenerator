@@ -35,5 +35,7 @@ class HistoryHandler:
     def print_diff(self, opt):
         if opt.is_verbose:
             DiffPrinter.print_verbose_diff(self.diff, opt.verbose_separator, opt.verbose_padding)
+        elif opt.is_json_verbose:
+            DiffPrinter.print_json_verbose_diff(self.diff)
         else:
             DiffPrinter.print_basic_diff(self.diff)
