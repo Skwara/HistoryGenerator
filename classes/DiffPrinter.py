@@ -35,7 +35,7 @@ class DiffPrinter:
         else:
             if j > 0 and (i == 0 or lcs_array[i][j - 1] >= lcs_array[i - 1][j]):
                 cls.__print_diff_verbose(lcs_array, seq1, seq2, i, j - 1)
-                cls.__do_print(seq1[i - 1], cls._DiffState.Added)
+                cls.__do_print(seq2[j-1], cls._DiffState.Added)
             elif i > 0 and (j == 0 or lcs_array[i][j - 1] < lcs_array[i - 1][j]):
                 cls.__print_diff_verbose(lcs_array, seq1, seq2, i - 1, j)
                 cls.__do_print(seq1[i - 1], cls._DiffState.Removed)
