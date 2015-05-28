@@ -1,13 +1,13 @@
 class Shape:
     def radius(self, r):
-        return r * r * 3.1415;
-		
+        return r * r * 3.1415
+
     def area(self, x, y):
         return x * y
 
     def __str__(self):
         return "x&Y"
-		
+
 class Token:
     def __init__(self, tok_type, tok_value, tok_begin, tok_end, tok_line):
         self.type = tokenize.tok_name[tok_type]

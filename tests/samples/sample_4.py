@@ -1,7 +1,7 @@
 class Shape:
     def area(self, x, y):
         return z * y
-		
+
 class Token:
     def __init__(self, tok_type, tok_value, tok_begin, tok_end, tok_line):
         self.type = tokenize.tok_name[tok_type]
